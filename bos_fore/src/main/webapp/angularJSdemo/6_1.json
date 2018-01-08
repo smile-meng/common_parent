@@ -1,0 +1,7 @@
+{
+	"totalCount":100,
+	"products":[
+		{"id":"1001","name":"手机","price":"5000"},
+		{"id":"1002","name":"相机","price":"5000"}
+	]
+}

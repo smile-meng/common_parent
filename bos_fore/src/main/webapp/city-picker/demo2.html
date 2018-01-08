@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JS的用法</title>
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../js/self/city-picker.data.js"></script>
+		<script type="text/javascript" src="../js/self/city-picker.js" ></script>
+		<link rel="stylesheet" href="../css/city-picker.css" />
+		<script type="text/javascript">
+			$(function(){
+				$("#area").citypicker();
+				$("#reset").click(function(){
+					$("#area").citypicker('reset');
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div style="position: relative;">
+			
+			<input id="area" name="area" type="text" />
+			<input type="button" id="reset" value="重置" />
+		</div>
+	</body>
+</html>

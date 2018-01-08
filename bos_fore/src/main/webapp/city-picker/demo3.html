@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>JS的用法</title>
+		<script type="text/javascript" src="../js/jquery.js" ></script>
+		<script type="text/javascript" src="../js/self/city-picker.data.js"></script>
+		<script type="text/javascript" src="../js/self/city-picker.js" ></script>
+		<link rel="stylesheet" href="../css/city-picker.css" />
+		<script type="text/javascript">
+			$(function(){
+				$("#area").citypicker();
+				$("#setValBtn").click(function(){
+					//赋值前，必须先执行reset,destroy
+					$("#area").citypicker('reset');
+					$("#area").citypicker('destroy');
+					
+					$('#area').citypicker({
+						province:'陕西省',
+						city:'西安市',
+						district:'未央区'
+					});
+					
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div style="position: relative;">
+			
+			<input id="area" name="area" type="text"/>
+			<input type="button" id="setValBtn" value="赋值" />
+		</div>
+	</body>
+</html>

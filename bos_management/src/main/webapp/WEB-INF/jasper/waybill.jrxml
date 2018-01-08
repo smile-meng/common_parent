@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="waybill" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cedd192c-a467-4b5b-aa12-057ae9e77333">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="chinese" fontName="宋体" fontSize="13" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+	<parameter name="company" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from t_way_bill]]>
+	</queryString>
+	<field name="wayBillNum" class="java.lang.String"/>
+	<field name="sendName" class="java.lang.String"/>
+	<field name="sendAddress" class="java.lang.String"/>
+	<field name="recName" class="java.lang.String"/>
+	<field name="recAddress" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement style="chinese" x="152" y="16" width="271" height="40" uuid="905cdbe1-af9e-43f3-ad0c-f8f54d43bba4"/>
+				<textElement>
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[运单管理统计信息报表]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="chinese" stretchType="RelativeToTallestObject" x="436" y="56" width="100" height="20" uuid="ac25949b-2084-4e58-9888-110fe1a0e367"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{company}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement style="chinese" x="119" y="2" width="100" height="20" uuid="a9da6e8c-6381-4d01-98f4-09b9d10667da"/>
+				<text><![CDATA[寄件人]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="chinese" x="15" y="2" width="78" height="20" uuid="056be826-e1ac-4198-9958-6173d85a0f9c"/>
+				<text><![CDATA[运单号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="chinese" x="219" y="2" width="100" height="20" uuid="93932806-84ba-486c-8c74-a39dcbc5256b"/>
+				<text><![CDATA[寄件人地址]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="chinese" x="336" y="2" width="100" height="20" uuid="1169e923-5218-4a09-8d05-eac4563f19a9"/>
+				<text><![CDATA[收件人]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="chinese" x="436" y="2" width="100" height="20" uuid="ed0c08e3-d1cb-4451-bfad-1b0877b1c8e6"/>
+				<text><![CDATA[收件人地址]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement style="chinese" stretchType="RelativeToTallestObject" x="119" y="0" width="100" height="20" uuid="7de8c78a-aa53-4b7f-99cd-6e8cfabb6ca6"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sendName}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="chinese" stretchType="RelativeToTallestObject" x="15" y="0" width="78" height="20" uuid="6e0b2fb6-70d3-47df-806a-0216d180e468"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wayBillNum}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="chinese" stretchType="RelativeToTallestObject" x="219" y="0" width="100" height="40" uuid="aa4b6dc6-f455-4188-be91-304452c73435"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sendAddress}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="chinese" stretchType="RelativeToTallestObject" x="436" y="0" width="100" height="40" uuid="b8b6d73c-e08a-4e8b-8c41-36e77011e5ac"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recAddress}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="chinese" stretchType="RelativeToTallestObject" x="336" y="0" width="100" height="20" uuid="9af9970e-0996-4027-a442-9d9ef8593cf6"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recName}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

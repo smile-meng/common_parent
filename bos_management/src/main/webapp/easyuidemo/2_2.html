@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>accordion折叠面板布局页面</title>
+		<script type="text/javascript" src="../js/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js"></script>
+		<script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js"></script>
+		<link rel="stylesheet" href="../js/easyui/themes/default/easyui.css"/>
+		<link rel="stylesheet" href="../js/easyui/themes/icon.css"/>
+		<script type="text/javascript" src="../js/ztree/jquery.ztree.all-3.5.js"></script>
+		<link rel="stylesheet" href="../js/ztree/zTreeStyle.css"/>
+		
+		<script type="text/javascript">
+			
+			$(function(){
+				
+				//1.ztree菜单设置
+				var setting = {
+					data: {
+						simpleData: {
+							enable: true
+						}
+					},
+					callback:{
+						onClick:function(event, treeId, treeNode, clickFlag){
+							var content='<div style="width:100%;height:100%;overflow:hidden;">'
+							+'<iframe src="'
+							+treeNode.page
+							+'"acrolling="auto" style="width:100%;height:100%;border:0;"></iframe></div>';
+							//没有page树形菜单，不打开选项卡
+							if(treeNode.page != "" && treeNode.page != undefined){
+								//如果选项卡打开，直接选中，不重新打开一个新的选项卡
+								if($("#mytabs").tabs('exists',treeNode.name)){
+									$("#mytabs").tabs('select',treeNode.name);
+								}else{
+									$('#mytabs').tabs('add',{    
+									    title:treeNode.name,    
+									    content:content,    
+									    closable:true   
+									});  
+								}
+							}
+						}
+					}
+				};
+				//2.提供ztree树形数据
+				var zNodes =[
+					{ id:1, pId:0, name:"基础数据", open:true,page:"https://www.baidu.com"},
+					{ id:2, pId:0, name:"受理",page:"https://www.baidu.com"},
+					{ id:3, pId:0, name:"调度",page:"https://www.baidu.com"},
+					{ id:4, pId:0, name:"分拣管理",page:"https://www.baidu.com"},
+					{ id:11, pId:1, name:"基础档案设置",page:"https://www.baidu.com"},
+					{ id:12, pId:1, name:"收派标准",page:"https://www.baidu.com"},
+					{ id:13, pId:1, name:"班车管理",page:"https://www.baidu.com"},
+					{ id:14, pId:1, name:"快递员设置/替班",page:"https://www.baidu.com"},
+					{ id:15, pId:1, name:"区域设置",page:"https://www.baidu.com"},
+					{ id:16, pId:1, name:"管理分区",page:"https://www.baidu.com"},
+					{ id:17, pId:1, name:"管理定区/调度排班",page:"https://www.baidu.com"},
+					{ id:18, pId:1, name:"收派时间管理",page:"https://www.baidu.com"},
+					{ id:19, pId:1, name:"码云",page:"https://www.gitee.com"},
+					{ id:20, pId:1, name:"百度",page:"https://www.baidu.com"},
+					{ id:21, pId:2, name:"业务受理"},
+					{ id:22, pId:2, name:"运单快速录入"},
+					{ id:23, pId:2, name:"运单录入"},
+					{ id:24, pId:2, name:"运单导入"},
+					{ id:25, pId:2, name:"运单管理"},
+					{ id:26, pId:2, name:"异调运单"},
+					{ id:27, pId:2, name:"运单打印"},
+					{ id:28, pId:3, name:"查台转单"},
+					{ id:29, pId:3, name:"人工调度"},
+					{ id:30, pId:3, name:"取派调度监控"},
+					{ id:31, pId:3, name:"签收录入"},
+					{ id:32, pId:3, name:"取消签收申请"},
+					{ id:33, pId:3, name:"宣传任务"},
+					{ id:34, pId:4, name:"入库"},
+					{ id:35, pId:4, name:"出库"},
+					{ id:36, pId:4, name:"盘库"},
+					{ id:37, pId:4, name:"合包"},
+					{ id:38, pId:4, name:"到达时间录入"},
+					{ id:39, pId:4, name:"出入库查询"},
+					{ id:40, pId:4, name:"库存查询"},
+					{ id:41, pId:4, name:"合包查询"},
+				];
+				//3.生成菜单
+				$.fn.zTree.init($("#baseMenu"), setting, zNodes);
+					
+				var myTitle;
+				//对选项卡注册	右键事件
+				$("#mytabs").tabs({
+					onContextMenu:function(e, title,index){
+						//阻止默认菜单显示
+						e.preventDefault();
+						
+						myTitle = title;
+						
+						//显示自定义右键菜单
+						$('#menuRight').menu('show', {    
+  							left: e.pageX,    
+  							top: e.pageY    
+						}); 
+					}
+				});
+				
+				//为每个菜单绑定点击事件
+				//关闭选中的标签
+				//根据面板标题名称关闭窗口
+				$("#closeCurrent").click(function(){
+					$("#mytabs").tabs('close',myTitle);
+				});
+				
+				$("#closeAll").click(function(){
+					var mtabs = $("#mytabs").tabs('tabs');					
+					for(var i=mtabs.length-1;i>=0;i--){
+						$("#mytabs").tabs('close',mtabs[i].panel('options').title);
+					}
+				});
+				
+				$("#closeOthers").click(function(){
+					var mtabs = $("#mytabs").tabs('tabs');
+					var tab = $("#mytabs").tabs('getSelected');
+					for(var i=mtabs.length-1;i>=0;i--){
+						if(mtabs[i]!=tab){
+							$("#mytabs").tabs('close',mtabs[i].panel('options').title);
+						}
+					}
+				});
+				
+				//根据索引进行关闭窗口
+//				$("#closeCurrent").click(function(){
+//				    //获取选中的标签索引
+//				    var tab = $('#mytabs').tabs('getSelected');
+//				    var index = $('#mytabs').tabs('getTabIndex',tab);
+//				   	$("#mytabs").tabs("close",index);
+//				});
+//				   //关闭选中标签之外的标签
+//				$("#closeOthers").click(function(){
+//				    //获取所有标签
+//				    var tabs = $("#mytabs").tabs("tabs");
+//				    var length = tabs.length;
+//				    //获取选中标签的索引
+//				    var tab = $('#mytabs').tabs('getSelected');
+//				    var index = $('#mytabs').tabs('getTabIndex',tab);
+//				    //关闭选中标签之前的标签
+//				    for(var i=0;i<index;i++){
+//				   		$("#mytabs").tabs("close",0);
+//				    }
+//				    //关闭选中标签之后的标签
+//				    for(var i=0;i<length-index-1;i++){
+//				     	$("#mytabs").tabs("close",1);
+//				    }
+//				});
+//				   //关闭所有标签
+//				$("#closeAll").click(function(){
+//				    var tabs = $("#mytabs").tabs("tabs");
+//				    var length = tabs.length;
+//				    for(var i=0;i<length;i++){
+//				    	$("#mytabs").tabs("close",0);
+//				    }
+//				});
+				
+//				//警告窗口
+//				$.messager.alert("标题","内容","warning");
+//				
+//				//确认窗口
+//				$.messager.confirm("删除提示","确定删除吗？",function(result){
+//					if(result){
+//						alert("执行删除。。。");
+//					}else{
+//						alert("取消删除。。。");
+//					}
+//					
+//				});
+//				
+//				//输入窗口
+//				$.messager.prompt("调查窗口","你叫什么名字？",function(val){
+//					alert("hello,"+val);
+//				});
+				
+				//右下角窗口
+				$.messager.show({
+					title:"商城",
+					msg:"减价大促销,<a href='#'>请点击这里</a>",
+					timeout:5000,
+					showType:'slide'
+				});
+				
+				//进度条
+//				$.messager.progress({
+//					interval:1000	//每1秒增长10%
+//				});
+//				//定时器,5秒后自动关闭
+//				window.setTimeout("$.messager.progress('close');",5000);
+			});
+		</script>
+	</head>
+	<body class="easyui-layout">
+		<div data-options="region:'north',title:'BOS物流管理系统'" style="height: 100px;">
+			<div style="position: absolute; right: 5px; bottom: 10px;">
+				<a href="#" class="easyui-menubutton" data-options="iconCls:'icon-save',menu:'#systemSonMenu'">
+					系统菜单
+				</a>
+				<div id="systemSonMenu" style="width:120px;">
+					<div>菜单一</div>
+					<div>菜单二</div>
+					<div>菜单三</div>
+					<div class="menu-sep"></div>
+					<div>菜单四</div>
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'west',title:'菜单导航'" style="width: 180px;">
+			<!-- 折叠面板 -->
+			<div class="easyui-accordion" data-options="fit:true">
+				<div data-options="title:'基础菜单'">
+					<!--通过ztree来进行制作树菜单-->
+					<ul id="baseMenu" class="ztree"></ul>
+					<!--超链接-->
+					<!--<a href="javascript:void(0)" id="baiduLink">百度一下</a>-->
+				</div>
+				
+				<div data-options="title:'系统菜单'">系统菜单</div>
+			</div>
+
+		</div>
+		<!--选项面板右键事件-->
+		<div id="menuRight" class="easyui-menu" style="width:120px;">   
+		   		<div id="closeCurrent" name="closeCurrent">关闭当前窗口</div>   
+		   		<div id="closeOthers" name="closeOthers">关闭其他窗口</div>   
+		    	<div class="menu-sep"></div>   <!--分割线-->
+		    	<div id="closeAll" name="closeAll" data-options="iconCls:'icon-cancel'">关闭全部窗口</div> 
+		   </div>
+		
+		<div data-options="region:'center'">
+			<div id="mytabs" class="easyui-tabs" style="width:500px;height:250px;" data-options="fit:true">
+				<div title="消息中心" style="padding:20px;display:none;">
+					
+					
+					
+				</div>
+				<div title="选项面板二" data-options="iconCls:'icon-reload',closable:true" style="padding:20px;display:none;">
+					tab2
+				</div>
+			</div>
+		</div>
+		<div data-options="region:'east'" style="width: 80px;">东部区域</div>
+		<div data-options="region:'south'" style="height: 80px">南部区域</div>
+		
+		
+</html>
